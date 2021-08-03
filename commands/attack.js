@@ -35,13 +35,18 @@ module.exports = {
 		let otherUser = null;
 
 		game.users.forEach(u => {
-			if (u.discordId ==  interaction.data[0].user.id) {
+			if (u.discordId ==  interaction.options.data[0].user.id) {
 				otherUser = u;
 			}
 		})
 
 		if (otherUser == null) {
 			return interaction.reply('User not found.');
+		}
+
+		// can't attack yourself
+		if (user.discordId == otherUser.discordId) {
+			return interaction.reply('You cannot attack yourself.');
 		}
 
 		// have they already attacked today

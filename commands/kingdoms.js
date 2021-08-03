@@ -8,6 +8,11 @@ module.exports = {
 			str += user.name + " - population: "+user.population+" shrines: "+user.shrines+"\n";
 		})
 
-		return interaction.reply(str);
+		if (str == "") {
+			return interaction.reply("No kingdoms.");
+		} else {
+			return interaction.reply(str);
+		}
+		
 	},
 };

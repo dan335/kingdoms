@@ -1,7 +1,8 @@
 // https://discordapp.com/oauth2/authorize?client_id=871916605339238400&scope=bot&permissions=122406578240
 const fs = require('fs');
 const { Client, Collection, Intents } = require('discord.js');
-const { token } = require('./config.json');
+//const { token } = require('./config.json');
+const token = process.env.TOKEN;
 const _f = require('./functions.js');
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
@@ -21,7 +22,7 @@ let game = {
 
 client.once('ready', () => {
 	client.commands.forEach(c => {
-		client.guilds.cache.get('584901103083323392')?.commands.create(c);
+		client.guilds.cache.get('299633112328175617')?.commands.create(c);
 	})
 
 	console.log('Kingdoms is ready to go!');
@@ -42,7 +43,7 @@ client.on('interactionCreate', async interaction => {
 });
 
 
-_f.executeOnHours([0, 12], function() {
+_f.executeOnHours([0, 6, 12, 18], function() {
 
 	_f.newDay(game);
 

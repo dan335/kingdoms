@@ -3,16 +3,20 @@ module.exports = {
 	description: 'Guide to Kingdoms.',
 	async execute(interaction, game) {
 		return interaction.reply("\
-__Population__ - Everyone starts with the same population.  If you have extra food then your population will grow.  You can steal food by attacking someone.\n\
+__Population__ - The number of people in your kingdom.  If you have extra food then your population will grow.\n\
 \n\
 __Farmers__ - Farmers produce food.  Soldiers, builders and researchers consume food.  If you don't have enough food then you will lose population.\n\
-__Soldiers__ - Soldiers protect your realm from attacks.\n\
-__Builders__ - Builders work on building a shrine.  If you build a shrine then you win the game.\n\
+__Soldiers__ - Soldiers protect your realm from attacks and can attack other realms to steal their food.\n\
+__Builders__ - Builders work on building shrines.  The winner is whoever has the most shrines.\n\
 __Researchers__ - Researchers speed up farming and building.\n\
 \n\
 __/joingame__ - Join the game.\n\
 __/assign__ - Use the /assign command to assign a percentage of population to farmers, soldiers, builders or researchers.\n\
-__/attack__ - Use the /attack command to attack someone and steal their food.\n\
+__/attack__ - Use the /attack command to attack someone and steal their food.  You can attack once every 6 hours\n\
+\n\
+Every 6 hours the game updates.  The winner is whoever has the most shrines.  If the bot goes down then the game is over and restarts.\n\
+\n\
+Source at https://github.com/dan335/kingdoms\
 			");
 	},
 };

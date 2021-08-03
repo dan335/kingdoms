@@ -47,7 +47,7 @@ const newDay = (game) => {
 		}
 
 		// build shrines
-		user.shrines += user.population * user.builders * 0.01;
+		user.shrines += user.population * user.builders * 0.01 * user.research;
 	})
 }
 
