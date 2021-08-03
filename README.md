@@ -6,7 +6,10 @@ Builders - Builders work on building shrines.  The winner is whoever has the mos
 Researchers - Researchers speed up farming and building.
 
 /joingame - Join the game.
+
 /assign - Use the /assign command to assign a percentage of population to farmers, soldiers, builders or researchers.
+
 /attack - Use the /attack command to attack someone and steal their food.  You can attack once every 6 hours
+
 
 Every 6 hours the game updates.  The winner is whoever has the most shrines.  If the bot goes down then the game is over and restarts.
