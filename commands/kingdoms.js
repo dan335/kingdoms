@@ -5,7 +5,7 @@ module.exports = {
 		let str = "";
 
 		game.users.forEach(user => {
-			str += user.name + " - population: "+user.population+" shrines: "+user.shrines+"\n";
+			str += user.name + " - population: "+user.population+"k shrines: "+user.shrines+"\n";
 		})
 
 		if (str == "") {

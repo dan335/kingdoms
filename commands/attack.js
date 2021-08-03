@@ -63,7 +63,7 @@ module.exports = {
 		const usersSoldiers = user.population * user.soldiers;
 		const numSoldiersSending = interaction.options.data[1].value;
 
-		if (numSoldiersSending > user.soldiers) {
+		if (numSoldiersSending > usersSoldiers) {
 			return interaction.reply('You do not have '+numSoldiersSending+'.  You only have '+usersSoldiers+'.');
 		}
 

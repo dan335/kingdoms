@@ -15,7 +15,7 @@ module.exports = {
 		}
 
 		let str = "-[ **"+user.name+"**'s Kingdom ]-\n\
-population: "+user.population+"\n\
+population: "+user.population+"k\n\
 farmers: "+Math.round(user.farmers * 100) + "%\n\
 soldiers: "+Math.round(user.soldiers * 100) + "%\n\
 builders: "+Math.round(user.builders * 100) + "%\n\
