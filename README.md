@@ -1,8 +1,11 @@
 Population - The number of people in your kingdom.  If you have extra food then your population will grow.
 
 Farmers - Farmers produce food.  Soldiers, builders and researchers consume food.  If you don't have enough food then you will lose population.
+
 Soldiers - Soldiers protect your realm from attacks and can attack other realms to steal their food.
+
 Builders - Builders work on building shrines.  The winner is whoever has the most shrines.
+
 Researchers - Researchers speed up farming and building.
 
 /joingame - Join the game.
