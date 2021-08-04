@@ -9,9 +9,9 @@ module.exports = {
 			required: true
 		},
 		{
-			name: 'soldiers',
+			name: 'recruitment',
 			type: 'INTEGER',
-			description: 'Percentage of population to assign to soldiering.  0 - 100',
+			description: 'Percentage of population to train to be soldiers.  0 - 100',
 			required: true
 		},
 		{
@@ -27,8 +27,8 @@ module.exports = {
 			required: true
 		},
 	],
-	async execute(interaction, game) {
-		//console.log(interaction.options.data)
+	async execute(interaction, db) {
+		const usersCollection = db.collection('users');
 
 		// do numbers add up to 100
 		let sum = 0;
@@ -42,22 +42,19 @@ module.exports = {
 		}
 
 		// is user in game
-		let user = null;
-
-		game.users.forEach(u => {
-			if (u.discordId == interaction.user.id) {
-				user = u;
-			}
-		})
+		const user = await usersCollection.findOne({discordId: interaction.user.id});
 
 		if (!user) {
 			return interaction.reply('You are not in the game.  Join with /joingame.');
 		}
 
 		// set user
+		let set = {};
 		interaction.options.data.forEach(d => {
-			user[d.name] = d.value / 100;
+			set[d.name] = d.value / 100;
 		})
+
+		usersCollection.updateOne({discordId: interaction.user.id}, {$set: set});		
 
 		return interaction.reply('Your population has been assigned.  View your kingdom with /kingdom.');
 	},

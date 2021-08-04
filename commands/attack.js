@@ -15,30 +15,17 @@ module.exports = {
 			required: true
 		},
 	],
-	async execute(interaction, game) {
-		console.log(interaction.options.data)
+	async execute(interaction, db) {
+		const usersCollection = db.collection('users');
 
-		// find user
-		let user = null;
-
-		game.users.forEach(u => {
-			if (u.discordId == interaction.user.id) {
-				user = u;
-			}
-		})
+		const user = await usersCollection.findOne({discordId: interaction.user.id});
 
 		if (!user) {
 			return interaction.reply('You are not in the game.  Join with /joingame.');
 		}
 
 		// find other user
-		let otherUser = null;
-
-		game.users.forEach(u => {
-			if (u.discordId ==  interaction.options.data[0].user.id) {
-				otherUser = u;
-			}
-		})
+		let otherUser = await usersCollection.findOne({discordId: interaction.options.data[0].user.id});
 
 		if (otherUser == null) {
 			return interaction.reply('User not found.');
@@ -51,7 +38,7 @@ module.exports = {
 
 		// have they already attacked today
 		if (user.hasAttackedToday) {
-			return interaction.reply('You can only attack once every 12 hours.');
+			return interaction.reply('You can only attack once every hour.');
 		}
 
 		// are they sending too too few
@@ -60,11 +47,10 @@ module.exports = {
 		}
 
 		// are they sending too many
-		const usersSoldiers = user.population * user.soldiers;
 		const numSoldiersSending = interaction.options.data[1].value;
 
-		if (numSoldiersSending > usersSoldiers) {
-			return interaction.reply('You do not have '+numSoldiersSending+'.  You only have '+usersSoldiers+'.');
+		if (numSoldiersSending > user.soldiers) {
+			return interaction.reply('You do not have '+numSoldiersSending+' soldiers.  You only have '+user.soldiers+'.');
 		}
 
 		// the attack is a go
@@ -75,13 +61,13 @@ module.exports = {
 			// battle is won
 			const numFoodStolen = otherUser.food * 0.1;
 			let str = 'Battle was won.  You stole '+numFoodStolen+' food.';
-			user.food += numFoodStolen;
+			await usersCollection.updateOne({_id: user._id}, {$inc: {food:numFoodStolen}, $set: {hasAttackedToday:true}});
 			return interaction.reply(str);
 		} else {
 			// battle is lost
-			const numSoldiersLost = numSoldiersSending * 0.2;
+			const numSoldiersLost = numSoldiersSending * 0.3;
 			let str = 'Battle was lost. You lost '+numSoldiersLost+' soldiers.';
-			user.population -= numSoldiersLost;
+			await usersCollection.updateOne({_id: user._id}, {$inc: {soldiers:-numSoldiersLost}, $set: {hasAttackedToday:true}})
 			return interaction.reply(str);
 		}
 	},
