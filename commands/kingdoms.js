@@ -12,14 +12,16 @@ module.exports = {
 
 		let str = "";
 	
+		let i = 1;
 		users.forEach(user => {
 			let shrines = '';
 
-			for (let i = 0; i < user.shrines; i++) {
+			for (let i = 1; i < user.shrines; i++) {
 				shrines += '⛩️';
 			}
 
-			str += '**'+user.name + "** - population: **"+user.population+"**, shrines: **"+_f.formatNumber(user.shrines, 3)+'** '+shrines+"\n";
+			str += i+'. **'+user.name + "** - population: **"+user.population+"**, shrines: **"+_f.formatNumber(user.shrines, 3)+'** '+shrines+"\n";
+			i++;
 		})
 
 
@@ -31,7 +33,7 @@ module.exports = {
 		
 
 		return interaction.reply({
-			content: "Server time: "+_f.formatAMPM(new Date()) + " | " + (60 - new Date().getMinutes()).toString()+" minutes until next turn.",
+			content: _f.timeString(),
 			embeds: [embeded]
 		});
 	},

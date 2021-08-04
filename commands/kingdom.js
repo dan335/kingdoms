@@ -26,15 +26,15 @@ module.exports = {
 		.setDescription(desc)
 		.addFields(
 			{name:'😀 Population', value:_f.formatNumber(user.population, 3)},
-			{name:'👷 Builders', value:_f.formatNumber(user.builders * 100, 0)+"% = "+_f.formatNumber(user.population * user.builders, 3)+"\n"+_f.formatNumber(user.shrines, 3)+" Shrines ⛩️", inline: true},
-			{name:'⚔️ Recruitment', value:_f.formatNumber(user.recruitment * 100, 0)+"% = "+_f.formatNumber(user.population * user.recruitment, 3)+"\n"+ _f.formatNumber(user.soldiers, 3)+" Soldiers", inline: true},
-			{name:'🌾 Farmers', value:_f.formatNumber(user.farmers * 100, 0)+"% = "+_f.formatNumber(user.population * user.farmers, 3)+"\n"+_f.formatNumber(user.food, 3)+" Food 🌮", inline: true},
-			{name:'📐 Researchers', value:_f.formatNumber(user.researchers * 100, 0)+"% = "+_f.formatNumber(user.population * user.researchers, 3)+"\n"+_f.formatNumber(user.research, 3)+'x Technology', inline: true},
+			{name:'👷 Builders', value:_f.formatNumber(user.builders * 100, 0)+"% = "+_f.formatNumber(user.population * user.builders, 3)+" Builders\n"+_f.formatNumber(user.shrines, 3)+" Shrines ⛩️", inline: false},
+			{name:'⚔️ Recruitment', value:_f.formatNumber(user.recruitment * 100, 0)+"% = "+_f.formatNumber(user.population * user.recruitment, 3)+" Rrecruiters\n"+ _f.formatNumber(user.soldiers, 3)+" Soldiers", inline: false},
+			{name:'🌾 Farmers', value:_f.formatNumber(user.farmers * 100, 0)+"% = "+_f.formatNumber(user.population * user.farmers, 3)+" Farmers\n"+_f.formatNumber(user.food, 3)+" Food 🌮", inline: false},
+			{name:'📐 Researchers', value:_f.formatNumber(user.researchers * 100, 0)+"% = "+_f.formatNumber(user.population * user.researchers, 3)+" Researchers\n"+_f.formatNumber(user.research, 3)+'x Technology', inline: false},
 		)
 		.setThumbnail(interaction.user.avatarURL())
 
 		return interaction.reply({
-			content: "Server time: "+_f.formatAMPM(new Date()) + " | " + (60 - new Date().getMinutes()).toString()+" minutes until next turn.",
+			content: _f.timeString(),
 			embeds: [embeded]
 		});
 	},

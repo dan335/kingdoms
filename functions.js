@@ -93,4 +93,9 @@ const formatNumber = (num, precision) => {
 	return num.toFixed(precision)
 }
 
-module.exports = {executeOnHours:executeOnHours, newDay:newDay, formatAMPM:formatAMPM, formatNumber:formatNumber}
+
+const timeString = () => {
+	return (60 - new Date().getMinutes()).toString()+" minutes until next turn.";
+}
+
+module.exports = {executeOnHours:executeOnHours, newDay:newDay, formatAMPM:formatAMPM, formatNumber:formatNumber, timeString:timeString}
