@@ -34,6 +34,11 @@ mongo.connect(error => {
 			client.guilds.cache.get('299633112328175617')?.commands.create(c);
 		})
 
+		cron.schedule('0 * * * *', () => {
+			_f.newDay(db);
+			_f.checkForGameOver(client, db);
+		});
+
 		console.log('Kingdoms is ready to go!');
 	});
 
@@ -52,11 +57,6 @@ mongo.connect(error => {
 	});
 
   	client.login(token);
-
-	cron.schedule('0 * * * *', () => {
-		_f.newDay(db);
-		_f.checkForGameOver(db);
-	});
 })
 
 

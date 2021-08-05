@@ -34,7 +34,7 @@ const newDay = async (db) => {
 		food += user.population * user.farmers * user.research;
 
 		// take away food
-		food -= user.population - user.population * user.farmers - user.soldiers;
+		food -= user.population - user.population * user.farmers;
 
 		user.food = Math.max(0, user.food + food);
 
@@ -57,14 +57,14 @@ const newDay = async (db) => {
 		user.soldiers = Math.max(0, user.soldiers + soldiersGained);
 
 		usersCollection.updateOne({_id:user._id}, {$inc: {
-			research: 0.1 * user.researchers,
-			shrines: user.population * user.builders * 0.01 * user.research,
+			research: 0.001 * user.researchers,
+			shrines: user.population * user.builders * 0.001 * user.research,
 		}, $set: {
 			hasAttackedToday: false,
 			food: user.food,
 			foodGained: food,
-			shrinesGained: user.population * user.builders * 0.01 * user.research,
-			researchGained: 0.1 * user.researchers,
+			shrinesGained: user.population * user.builders * 0.001 * user.research,
+			researchGained: 0.001 * user.researchers,
 			population: user.population,
 			populationGained: populationGained,
 			soldiers: user.soldiers,
@@ -99,7 +99,7 @@ const timeString = () => {
 }
 
 
-const checkForGameOver = async (db) => {
+const checkForGameOver = async (client, db) => {
 	const shrinesToWin = 10;
 	
 	let winners = [];
@@ -124,13 +124,13 @@ const checkForGameOver = async (db) => {
 		})
 
 		if (winner) {
-			gameOverWin(db, winner);
+			gameOverWin(client, db, winner);
 		}
 	}
 }
 
 
-const gameOverWin = async (db, winningUser) => {
+const gameOverWin = async (client, db, winningUser) => {
 	const winnersCollection = db.collection('winners');
 
 	let obj = {
@@ -140,7 +140,16 @@ const gameOverWin = async (db, winningUser) => {
 
 	await winnersCollection.insertOne(obj);
 
+	const usersCollection = db.collection('users');
+	const users = await usersCollection.find({}).toArray();
+	users.forEach(user => {
+		let str = 'Kingdoms has ended.  '+winningUser.name+' won.  A new game has started.';
+		client.users.get(user.discordId)?.send(str);
+	})
+
+	resetGame(db);
 }
+
 
 const resetGame = async (db) => {
 	const usersCollection = db.collection('users');

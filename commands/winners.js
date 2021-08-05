@@ -14,13 +14,13 @@ module.exports = {
 	
 		let i = 1;
 		winners.forEach(winner => {
-			str += i+'. **'+winner.user.name + "** - population: **"+_f.formatNumber(user.population, 0)+"**\n";
+			str += i+'. **'+winner.user.name + "** - population: **"+_f.formatNumber(winner.user.population, 0)+"**\n";
 			i++;
 		})
 
 
 		const embeded = new MessageEmbed()
-		.setTitle('-[ The Winners of Enno Games 🏰 ]-')
+		.setTitle('-[ The Winners of Kingdoms 🏰 ]-')
 		.setColor('#0099ff')
 		.setDescription(str)
 

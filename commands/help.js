@@ -8,7 +8,7 @@ module.exports = {
 
 		const embeded = new MessageEmbed()
 		.setTitle('-[ Kingdoms Guide ]-')
-		.setDescription("The winner is whoever build 10 shrines first.  The game updates every hour.")
+		.setDescription("The winner is whoever builds 10 shrines first.  The game updates every hour.")
 		.addFields(
 			{name:'😀 Population', value:"The number of people in your kingdom.  If you have extra food then your population will grow."},
 			{name:'🌾 Farmers and Food', value:"Farmers produce food.  Soldiers, builders and researchers consume food.  If you don't have enough food then you will lose population."},

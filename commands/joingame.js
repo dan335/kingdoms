@@ -28,10 +28,12 @@ module.exports = {
 			shrinesGained: 0,
 			hasAttackedToday: false,
 			research: 1, 	// starts at 1.  is a multiplier
-			researchGained: 0
+			researchGained: 0,
+			channelId: interaction.channelId,
+			guildId: interaction.guildId
 		};
 
-		await usersCollection.insert(user);
+		await usersCollection.insertOne(user);
 
 		return interaction.reply('Welcome to Kingdoms!  View your kingdom with /kingdom.');
 	},
