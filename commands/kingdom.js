@@ -12,7 +12,7 @@ module.exports = {
 			return interaction.reply('You are not in the game.  Join with /joingame.');
 		}
 
-		let desc = user.hasAttackedToday ? "Your soldiers are tired and cannot attack again today.  \n\n" : "Your soldiers are ready to attack.  \n\n";
+		let desc = user.hasAttackedToday ? "Your soldiers are tired and cannot attack for "+(60 - new Date().getMinutes()).toString()+" minutes.  \n\n" : "Your soldiers are ready to attack.  \n\n";
 
 		desc += "Last turn you gained "+_f.formatNumber(user.foodGained, 3)+" food.  ";
 		desc += "Gained "+_f.formatNumber(user.populationGained, 3)+" population.  ";
@@ -25,11 +25,11 @@ module.exports = {
 		.setTitle("-[ **"+user.name+"**'s Kingdom ]-")
 		.setDescription(desc)
 		.addFields(
-			{name:'😀 Population', value:_f.formatNumber(user.population, 3)},
-			{name:'👷 Builders', value:_f.formatNumber(user.builders * 100, 0)+"% = "+_f.formatNumber(user.population * user.builders, 3)+" Builders\n"+_f.formatNumber(user.shrines, 3)+" Shrines ⛩️", inline: false},
-			{name:'⚔️ Recruitment', value:_f.formatNumber(user.recruitment * 100, 0)+"% = "+_f.formatNumber(user.population * user.recruitment, 3)+" Rrecruiters\n"+ _f.formatNumber(user.soldiers, 3)+" Soldiers", inline: false},
-			{name:'🌾 Farmers', value:_f.formatNumber(user.farmers * 100, 0)+"% = "+_f.formatNumber(user.population * user.farmers, 3)+" Farmers\n"+_f.formatNumber(user.food, 3)+" Food 🌮", inline: false},
-			{name:'📐 Researchers', value:_f.formatNumber(user.researchers * 100, 0)+"% = "+_f.formatNumber(user.population * user.researchers, 3)+" Researchers\n"+_f.formatNumber(user.research, 3)+'x Technology', inline: false},
+			{name:'😀 Population', value:_f.formatNumber(user.population, 1)},
+			{name:'👷 Builders', value:_f.formatNumber(user.builders * 100, 0)+"% = "+_f.formatNumber(user.population * user.builders, 2)+" Builders\n"+_f.formatNumber(user.shrines, 3)+" Shrines ⛩️", inline: false},
+			{name:'⚔️ Recruitment', value:_f.formatNumber(user.recruitment * 100, 0)+"% = "+_f.formatNumber(user.population * user.recruitment, 2)+" Recruiters\n"+ _f.formatNumber(user.soldiers, 3)+" Soldiers", inline: false},
+			{name:'🌾 Farmers', value:_f.formatNumber(user.farmers * 100, 0)+"% = "+_f.formatNumber(user.population * user.farmers, 2)+" Farmers\n"+_f.formatNumber(user.food, 3)+" Food 🌮", inline: false},
+			{name:'📐 Researchers', value:_f.formatNumber(user.researchers * 100, 0)+"% = "+_f.formatNumber(user.population * user.researchers, 2)+" Researchers\n"+_f.formatNumber(user.research, 3)+'x Technology', inline: false},
 		)
 		.setThumbnail(interaction.user.avatarURL())
 

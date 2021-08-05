@@ -20,7 +20,7 @@ module.exports = {
 				shrines += '⛩️';
 			}
 
-			str += i+'. **'+user.name + "** - population: **"+user.population+"**, shrines: **"+_f.formatNumber(user.shrines, 3)+'** '+shrines+"\n";
+			str += i+'. **'+user.name + "** - population: **"+_f.formatNumber(user.population, 0)+"**, shrines: **"+_f.formatNumber(user.shrines, 3)+'** '+shrines+"\n";
 			i++;
 		})
 

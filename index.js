@@ -1,8 +1,9 @@
 // https://discordapp.com/oauth2/authorize?client_id=871916605339238400&scope=bot&permissions=122406578240
+require('dotenv').config();
 const fs = require('fs');
 const { Client, Collection, Intents } = require('discord.js');
-const { token } = require('./config.json');
-//const token = process.env.TOKEN;
+//const { token } = require('./config.json');
+const token = process.env.TOKEN;
 const _f = require('./functions.js');
 const { MongoClient } = require("mongodb");
 const mongo = new MongoClient(process.env.MONGO_URL, { useNewUrlParser: true });
@@ -54,6 +55,7 @@ mongo.connect(error => {
 
 	cron.schedule('0 * * * *', () => {
 		_f.newDay(db);
+		_f.checkForGameOver(db);
 	});
 })
 

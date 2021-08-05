@@ -98,4 +98,53 @@ const timeString = () => {
 	return (60 - new Date().getMinutes()).toString()+" minutes until next turn.";
 }
 
-module.exports = {executeOnHours:executeOnHours, newDay:newDay, formatAMPM:formatAMPM, formatNumber:formatNumber, timeString:timeString}
+
+const checkForGameOver = async (db) => {
+	const shrinesToWin = 10;
+	
+	let winners = [];
+
+	const usersCollection = db.collection('users');
+	const users = await usersCollection.find({}).toArray();
+	users.forEach(user => {
+		if (user.shrines >= shrinesToWin) {
+			winners.push(user);
+		}
+	});
+
+	if (winners.length) {
+		let winner = null;
+		let highest = 0;
+
+		winners.forEach(u => {
+			if (u.shrines > highest) {
+				winner = u;
+				highest = u.shrines;
+			}
+		})
+
+		if (winner) {
+			gameOverWin(db, winner);
+		}
+	}
+}
+
+
+const gameOverWin = async (db, winningUser) => {
+	const winnersCollection = db.collection('winners');
+
+	let obj = {
+		date: new Date(),
+		user: winningUser
+	}
+
+	await winnersCollection.insertOne(obj);
+
+}
+
+const resetGame = async (db) => {
+	const usersCollection = db.collection('users');
+	usersCollection.drop();
+}
+
+module.exports = {executeOnHours:executeOnHours, newDay:newDay, formatAMPM:formatAMPM, formatNumber:formatNumber, timeString:timeString, checkForGameOver:checkForGameOver}

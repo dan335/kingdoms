@@ -1,3 +1,6 @@
+const _f = require('../functions.js');
+
+
 module.exports = {
 	name: 'attack',
 	description: 'Attack another kingdom and steal food.',
@@ -55,20 +58,51 @@ module.exports = {
 
 		// the attack is a go
 
-		let isWin = numSoldiersSending > otherUser.population * otherUser.soldiers;
+		let isWin = numSoldiersSending > otherUser.soldiers;
 
 		if (isWin) {
 			// battle is won
-			const numFoodStolen = otherUser.food * 0.1;
-			let str = 'Battle was won.  You stole '+numFoodStolen+' food.';
+			const numFoodStolen = otherUser.food * Math.random() * 0.2;
+			const numShrinesDestroyed = otherUser.shrines * Math.random() * 0.2;
+			console.log(numShrinesDestroyed)
+			let str = 'Battle was won.  You stole '+_f.formatNumber(numFoodStolen, 3)+' food and destroyed '+_f.formatNumber(numShrinesDestroyed, 3)+' shrines.';
 			await usersCollection.updateOne({_id: user._id}, {$inc: {food:numFoodStolen}, $set: {hasAttackedToday:true}});
+			await usersCollection.updateOne({_id:otherUser._id}, {$set: {shrines:Math.max(0, otherUser.shrines-numShrinesDestroyed)}});
+
+			createThread(interaction, user, otherUser, true, numFoodStolen, numShrinesDestroyed, null);
+
 			return interaction.reply(str);
 		} else {
 			// battle is lost
-			const numSoldiersLost = numSoldiersSending * 0.3;
-			let str = 'Battle was lost. You lost '+numSoldiersLost+' soldiers.';
+			const numSoldiersLost = numSoldiersSending * Math.random() * 0.5;
+			let str = 'Battle was lost. You lost '+_f.formatNumber(numSoldiersLost, 3)+' soldiers.';
 			await usersCollection.updateOne({_id: user._id}, {$inc: {soldiers:-numSoldiersLost}, $set: {hasAttackedToday:true}})
+
+			createThread(interaction, user, otherUser, false, null, null, numSoldiersLost);
+
 			return interaction.reply(str);
 		}
 	},
 };
+
+
+const createThread = async (interaction, user, otherUser, isWon, numFoodStolen, numShrinesDestroyed, numSoldiersLost) => {
+	let str = user.name+' attacked '+otherUser.name+' and '+(isWon ? 'won' : 'lost')+'.  ';
+
+	if (isWon) {
+		str += user.name+' stole '+_f.formatNumber(numFoodStolen, 3)+' food and destroyed '+_f.formatNumber(numShrinesDestroyed, 3)+' shrines.';
+	} else {
+		str += user.name+' lost '+_f.formatNumber(numSoldiersLost, 3)+' soldiers.';
+	}
+
+	const thread = await interaction.channel.threads.create({
+		name: user.name+'-'+otherUser.name+'-'+(isWon ? 'won' : 'lost'),
+		autoArchiveDuration: 1440,
+		reason: str
+	})
+
+	thread.members.add(user.discordId);
+	thread.members.add(otherUser.discordId);
+
+	thread.send(str);
+}
