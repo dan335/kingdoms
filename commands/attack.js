@@ -64,10 +64,13 @@ module.exports = {
 			// battle is won
 			const numFoodStolen = otherUser.food * Math.random() * 0.2;
 			const numShrinesDestroyed = otherUser.shrines * Math.random() * 0.2;
-			console.log(numShrinesDestroyed)
+
 			let str = 'Battle was won.  You stole '+_f.formatNumber(numFoodStolen, 3)+' food and destroyed '+_f.formatNumber(numShrinesDestroyed, 3)+' shrines.';
 			await usersCollection.updateOne({_id: user._id}, {$inc: {food:numFoodStolen}, $set: {hasAttackedToday:true}});
-			await usersCollection.updateOne({_id:otherUser._id}, {$set: {shrines:Math.max(0, otherUser.shrines-numShrinesDestroyed)}});
+			await usersCollection.updateOne({_id:otherUser._id}, {$set: {
+				shrines:Math.max(0, otherUser.shrines-numShrinesDestroyed),
+				food:otherUser.food - numFoodStolen
+			}});
 
 			createThread(interaction, user, otherUser, true, numFoodStolen, numShrinesDestroyed, null);
 

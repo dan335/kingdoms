@@ -31,7 +31,8 @@ mongo.connect(error => {
 
   	client.once('ready', () => {
 		client.commands.forEach(c => {
-			client.guilds.cache.get('299633112328175617')?.commands.create(c);
+			//client.guilds.cache.get('299633112328175617')?.commands.create(c);
+			client.application.commands.create(c);
 		})
 
 		cron.schedule('0 * * * *', () => {

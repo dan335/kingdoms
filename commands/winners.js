@@ -34,10 +34,10 @@ module.exports = {
 
 
 function compare( a, b ) {
-	if ( a.shrines < b.shrines ){
+	if ( a.date < b.date ){
 	  return 1;
 	}
-	if ( a.shrines > b.shrines ){
+	if ( a.date > b.date ){
 	  return -1;
 	}
 	return 0;

@@ -41,9 +41,9 @@ const newDay = async (db) => {
 		// grow population
 		let populationGained = 0;
 		if (user.food > 0) {
-			populationGained += 10;
+			populationGained += 1;
 		} else {
-			populationGained -= 10;
+			populationGained -= 1;
 		}
 		user.population = Math.max(0, user.population + populationGained);
 
@@ -57,14 +57,14 @@ const newDay = async (db) => {
 		user.soldiers = Math.max(0, user.soldiers + soldiersGained);
 
 		usersCollection.updateOne({_id:user._id}, {$inc: {
-			research: 0.001 * user.researchers,
-			shrines: user.population * user.builders * 0.001 * user.research,
+			research: 0.05 * user.researchers,
+			shrines: user.population * user.builders * 0.005 * user.research,
 		}, $set: {
 			hasAttackedToday: false,
 			food: user.food,
 			foodGained: food,
-			shrinesGained: user.population * user.builders * 0.001 * user.research,
-			researchGained: 0.001 * user.researchers,
+			shrinesGained: user.population * user.builders * 0.005 * user.research,
+			researchGained: 0.05 * user.researchers,
 			population: user.population,
 			populationGained: populationGained,
 			soldiers: user.soldiers,
@@ -142,9 +142,11 @@ const gameOverWin = async (client, db, winningUser) => {
 
 	const usersCollection = db.collection('users');
 	const users = await usersCollection.find({}).toArray();
+	let str = 'Kingdoms has ended.  '+winningUser.name+' won.  A new game has started.';
 	users.forEach(user => {
-		let str = 'Kingdoms has ended.  '+winningUser.name+' won.  A new game has started.';
-		client.users.get(user.discordId)?.send(str);
+		client.users.fetch(user.discordId).then(user => {
+			user.send(str)
+		})
 	})
 
 	resetGame(db);
