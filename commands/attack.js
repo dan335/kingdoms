@@ -98,14 +98,16 @@ const createThread = async (interaction, user, otherUser, isWon, numFoodStolen, 
 		str += user.name+' lost '+_f.formatNumber(numSoldiersLost, 3)+' soldiers.';
 	}
 
-	const thread = await interaction.channel.threads.create({
+	const thread = await interaction.channel.threads?.create({
 		name: user.name+'-'+otherUser.name+'-'+(isWon ? 'won' : 'lost'),
 		autoArchiveDuration: 1440,
 		reason: str
 	})
 
-	thread.members.add(user.discordId);
-	thread.members.add(otherUser.discordId);
+	if (thread) {
+		thread.members.add(user.discordId);
+		thread.members.add(otherUser.discordId);
 
-	thread.send(str);
+		thread.send(str);
+	}
 }
